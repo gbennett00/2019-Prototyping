@@ -29,6 +29,8 @@ public class AutoMoveCargoToPosition extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+    Robot.cargoIntake.cargoIntakeMotor.configContinuousCurrentLimit(8);
+    Robot.cargoIntake.cargoIntakeMotor.set(1);
     Robot.cargoIntake.enable();
   }
 
