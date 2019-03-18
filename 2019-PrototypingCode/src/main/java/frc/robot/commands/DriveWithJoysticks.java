@@ -7,21 +7,13 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.command.PIDCommand;
+import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
+import frc.robot.RobotMap;
 
-public class RetractHatchIntake extends PIDCommand {
-  
-  double targetRotations;
-  
-  public RetractHatchIntake(double rotations) {
-    super(0.5,0,0);
-    requires(Robot.hatchIntake);
-
-    getPIDController().setAbsoluteTolerance(0.1);
-    getPIDController().setSetpoint(rotations);
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
+public class DriveWithJoysticks extends Command {
+  public DriveWithJoysticks() {
+    requires(Robot.drivetrain);
   }
 
   // Called just before this Command runs the first time
@@ -30,41 +22,36 @@ public class RetractHatchIntake extends PIDCommand {
     super.initialize();
   }
 
-
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    getPIDController().enable();
+    super.execute();
+
+    double speed = -Robot.oi.getPilotController().getRawAxis(RobotMap.leftJoystickYAxis);
+    double rotation = Robot.oi.getPilotController().getRawAxis(RobotMap.rightJoystickXAxis) * 0.8;
+    
+    if(Robot.drivetrain.shouldUseReverseDrive()){
+      speed *= -1;
+    }
+
+    if(Robot.oi.getPilotController().getRawButton(RobotMap.joystickRightBumper) || Robot.oi.getPilotController().getRawButton(RobotMap.joystickLeftBumper)){
+      Robot.drivetrain.arcadeDrive(speed * 0.5, rotation * 0.65);
+    }
+    else{
+      Robot.drivetrain.arcadeDrive(speed, rotation);
+    }
   }
+  
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return getPIDController().onTarget();
+    return false;
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.hatchIntake.hatchExtensionMotor.set(0);
-    getPIDController().disable();
-    super.end();
-  }
-
-  @Override
-  protected double returnPIDInput() {
-    targetRotations = Robot.hatchIntake.getExtensionEncoderPosition() / 4096;
-    
-    return targetRotations;
-  }
-
-  @Override
-  protected void usePIDOutput(double output) {
-    output = Math.min(output, 0.5);
-    output = Math.max(output, -0.5);
-
-    Robot.hatchIntake.extendIntake(output);
-
   }
 
   // Called when another command which requires one or more of the same

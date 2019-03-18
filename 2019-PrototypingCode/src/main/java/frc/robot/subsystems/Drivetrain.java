@@ -31,6 +31,8 @@ public class Drivetrain extends Subsystem {
   private SpeedControllerGroup rightMotors = new SpeedControllerGroup(rightBackMotor, rightFrontMotor);
   
   private DifferentialDrive drive = new DifferentialDrive(leftMotors, rightMotors);
+
+  public boolean useReverseDrive = false;
   
   public Drivetrain(){
     drive = new DifferentialDrive(leftMotors, rightMotors);
@@ -73,6 +75,15 @@ public class Drivetrain extends Subsystem {
     
   public void tankDrive(double leftSpeed, double rightSpeed){
       drive.tankDrive(leftSpeed, rightSpeed);
-    }
-
   }
+
+  public boolean shouldUseReverseDrive(){
+    return useReverseDrive;
+  }
+
+  public void setUseReverseDrive(boolean notCurrentDriveDirection){
+    useReverseDrive = notCurrentDriveDirection;
+  
+  }
+
+}

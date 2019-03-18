@@ -7,70 +7,50 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.command.PIDCommand;
+import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class AutoDriveForward extends PIDCommand {
+public class AutoMoveCargoToPosition extends Command {
+  
+  double position;
 
-  private double wheelRotations;
-	private double travelDistance;
-  private double Circumference = 6 * Math.PI;
-
-  public AutoDriveForward(double distance) {
-    super(12,0,0);
-    requires(Robot.drivetrain);
-
-    getPIDController().setAbsoluteTolerance(0.1);
-    getPIDController().setSetpoint(distance);
-
+  public AutoMoveCargoToPosition(double position) {
+    requires(Robot.cargoIntake);
+    this.position = position;
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
     super.initialize();
+    Robot.cargoIntake.setSetpoint(position);
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    getPIDController().enable();
+    Robot.cargoIntake.enable();
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return getPIDController().onTarget();
+    return Robot.cargoIntake.onTarget();
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.drivetrain.stopDrive();
-    getPIDController().disable();
-    super.end();
+    Robot.cargoIntake.disable();
+    Robot.cargoIntake.free();
   }
-
-  @Override
-  protected double returnPIDInput() {
-    wheelRotations = Robot.drivetrain.getRightEncoderPosition() / 4096;
-    travelDistance = wheelRotations *Circumference;
-    
-    return travelDistance;
-   }
-
-   @Override
-   protected void usePIDOutput(double output) {
-     output = Math.min(output, 0.5);
-     output = Math.max(output, -0.5);
-     
-     Robot.drivetrain.tankDrive(output, output);
-     
-   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+    end();
   }
+
+ 
 }

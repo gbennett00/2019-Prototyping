@@ -7,6 +7,7 @@
 
 package frc.robot.subsystems;
 
+//import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
@@ -19,41 +20,38 @@ import com.ctre.phoenix.motorcontrol.can.*;
 public class HatchIntake extends Subsystem {
   
   public WPI_TalonSRX hatchIntakeMotor = new WPI_TalonSRX(RobotMap.hatchIntakeMotor);
-  public WPI_TalonSRX hatchExtensionMotor = new WPI_TalonSRX(RobotMap.hatchExtensionMotor);
-
 
   @Override
   public void initDefaultCommand() {
    
   }
+  public boolean getUpperHatchLimit(){
+    return Robot.upperHatchLimitSwitch.get();
+  }
+
+  public boolean getLowerHatchLimit(){
+    return !Robot.lowerHatchLimitSwitch.get();
+  }
 
   public void intakeUp() {
-    Robot.hatchIntake.hatchIntakeMotor.set(-.8);
+    Robot.hatchIntake.hatchIntakeMotor.set(0.8);
   }
 
   public void intakeDown() {
-    Robot.hatchIntake.hatchIntakeMotor.set(.8);
+    Robot.hatchIntake.hatchIntakeMotor.set(-0.8);
   }
 
-  public void intakeStop() {
-    Robot.hatchIntake.hatchIntakeMotor.set(0);
+  public void hatchIntakeStop() {
+  Robot.hatchIntake.hatchIntakeMotor.set(0);
   }
 
-  public void resetEncoder(){
-    hatchExtensionMotor.setSelectedSensorPosition(0, 0, 0);
+  /*public void limitActive(){
+    if(!getLimitBoolean()){
+      Robot.hatchIntake.hatchIntakeMotor.set(0);
+    }else if(getLimitBoolean()){
+     Robot.hatchIntake.intakeUp();
+    }
   }
-
-  public double getExtensionEncoderPosition(){
-    return hatchExtensionMotor.getSelectedSensorPosition(0);
-  }
-
-  public void extendIntake(double speed){
-    Robot.hatchIntake.hatchExtensionMotor.set(speed);
-  }
-
-  public void retractIntake(double speed){
-    Robot.hatchIntake.hatchExtensionMotor.set(speed);
-  }
-
+  */
 
 }
