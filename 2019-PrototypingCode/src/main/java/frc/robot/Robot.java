@@ -90,7 +90,7 @@ public class Robot extends TimedRobot {
 
     drive = new DriveWithJoysticks();
     swap = new SwapDriveDirection();
-    extend = new ExtendIntake(1.6);
+    extend = new ExtendIntake(1.75);
 
     upButton = new Trigger.ButtonScheduler(){
     
