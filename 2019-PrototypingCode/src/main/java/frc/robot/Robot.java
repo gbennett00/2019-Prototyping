@@ -231,6 +231,8 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
     retract = new ExtendIntake(0.94);
-    retract.start();
+    if(actuatorPosition.getVoltage() > 0.95){
+      retract.start();
+    }
   }
 }
