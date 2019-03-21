@@ -9,10 +9,12 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
+import frc.robot.commands.SwapIntake;
 
 public class AutoMoveCargoToPosition extends Command {
   
   double position;
+  SwapIntake swapIntake = new SwapIntake();
 
   public AutoMoveCargoToPosition(double position) {
     requires(Robot.cargoIntake);
@@ -32,6 +34,9 @@ public class AutoMoveCargoToPosition extends Command {
     Robot.cargoIntake.cargoIntakeMotor.configContinuousCurrentLimit(8);
     Robot.cargoIntake.cargoIntakeMotor.set(1);
     Robot.cargoIntake.enable();
+    if(!Robot.cargoIntake.shouldRunIntake()){
+      swapIntake.start();
+    }
   }
 
   // Make this return true when this Command no longer needs to run execute()

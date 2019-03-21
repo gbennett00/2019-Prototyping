@@ -15,16 +15,21 @@ import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.buttons.Trigger;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.DriveWithJoysticks;
 import frc.robot.commands.ExtendIntake;
 import frc.robot.commands.HatchIntakeUp;
 import frc.robot.commands.SwapDriveDirection;
+import frc.robot.commands.HatchInitial;
+import frc.robot.commands.SwapIntake;
 import frc.robot.subsystems.CargoIntake;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.HatchIntake;
 import frc.robot.subsystems.IntakeExtender;
+
 
 
 
@@ -44,14 +49,19 @@ public class Robot extends TimedRobot {
   public static CargoIntake cargoIntake;
 
   public static DriveWithJoysticks drive;
-  public static SwapDriveDirection swap;
+  public static SwapDriveDirection swapDrive;
   public static HatchIntakeUp upCommand;
+  public static HatchInitial hatch;
+  public static SwapIntake swapIntake;
   
   public static ExtendIntake extend;
 
   public static Trigger.ButtonScheduler upButton;
 
   public static OI oi;
+
+  Command initialcCommand;
+  SendableChooser<Command> chooser; 
 
   public static UsbCamera frontCamera;
 	public static UsbCamera backCamera;
@@ -89,8 +99,15 @@ public class Robot extends TimedRobot {
     cargoIntake = new CargoIntake();
 
     drive = new DriveWithJoysticks();
-    swap = new SwapDriveDirection();
+    swapDrive = new SwapDriveDirection();
     extend = new ExtendIntake(1.75);
+    hatch = new HatchInitial();
+    swapIntake = new SwapIntake();
+
+    chooser = new SendableChooser<>();
+    chooser.setDefaultOption("Hatch", hatch);
+    chooser.addOption("Cargo", swapIntake);
+    SmartDashboard.putData("Initial Chooser", chooser);
 
     upButton = new Trigger.ButtonScheduler(){
     
@@ -171,10 +188,12 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
   
     drivetrain.resetEncoders();
-  
+     
+    initialcCommand = (Command) chooser.getSelected();
+    initialcCommand.start();
     drive.start();
-    swap.start();
-    extend.start();
+    //swapDrive.start();
+    //extend.start();
   }
 
   /**

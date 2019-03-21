@@ -40,9 +40,7 @@ public class OI {
         copilotButtonY.whileHeld(new HatchIntakeUp());
         */
 
-        Button copilotLeftTrigger = new JoystickButton(coPilotController, RobotMap.joystickLeftBumper);
-        copilotLeftTrigger.whenPressed(new SwapIntake());
-
+    
         Button copilotButtonY = new JoystickButton(coPilotController, RobotMap.joystickButtonY);
         copilotButtonY.whenPressed(new ExtendIntake(1.75));
 
@@ -53,7 +51,16 @@ public class OI {
         copilotButtonA.whenPressed(new RetractIntake(0.94));
 
         Button copilotButtonX = new JoystickButton(coPilotController, RobotMap.joystickButtonX);
-        copilotButtonX.whenPressed(new AutoMoveCargoToPosition(Robot.cargoIntake.getOffset()));
+        copilotButtonX.whenPressed(new SwapIntake());
+
+        Button copilotLeftTrigger = new JoystickButton(coPilotController, RobotMap.joystickLeftBumper);
+        copilotLeftTrigger.whenPressed(new AutoMoveCargoToPosition(Robot.cargoIntake.getOffset()));
+
+        Button copilotStart = new JoystickButton(coPilotController, RobotMap.joystickButtonsStart);
+        copilotStart.whenPressed(new AutoMoveCargoToPosition(90 + Robot.cargoIntake.getOffset()));
+
+        Button copilotBack = new JoystickButton(coPilotController, RobotMap.joystickButtonBack);
+        copilotBack.whenPressed(new AutoMoveCargoToPosition(60 + Robot.cargoIntake.getOffset()));
 
         Button pilotButtonY = new JoystickButton(pilotController, RobotMap.joystickButtonY);
         pilotButtonY.whenPressed(new SwapDriveDirection());
@@ -68,6 +75,8 @@ public class OI {
         copilotButtonY.close();
         copilotButtonX.close();
         copilotButtonB.close();
+        copilotBack.close();
+        copilotStart.close();
         copilotLeftTrigger.close();
         pilotButtonY.close();
         pilotButtonA.close();
