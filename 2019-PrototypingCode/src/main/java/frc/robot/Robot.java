@@ -55,6 +55,7 @@ public class Robot extends TimedRobot {
   public static SwapIntake swapIntake;
   
   public static ExtendIntake extend;
+  public static ExtendIntake retract;
 
   public static Trigger.ButtonScheduler upButton;
 
@@ -225,5 +226,11 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void testPeriodic() {
+  }
+
+  @Override
+  public void disabledInit() {
+    retract = new ExtendIntake(0.94);
+    retract.start();
   }
 }
