@@ -34,7 +34,7 @@ public class AutoMoveCargoToPosition extends Command {
     Robot.cargoIntake.cargoIntakeMotor.configContinuousCurrentLimit(8);
     Robot.cargoIntake.cargoIntakeMotor.set(1);
     Robot.cargoIntake.enable();
-    if(!Robot.cargoIntake.shouldRunIntake()){
+    if(!Robot.cargoIntake.shouldRunIntake() && position == Robot.cargoIntake.getOffset()){
       swapIntake.start();
     }
   }
