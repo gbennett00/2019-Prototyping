@@ -8,6 +8,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.PIDCommand;
+import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
 public class RetractIntake extends PIDCommand {
@@ -21,6 +22,8 @@ public class RetractIntake extends PIDCommand {
     // eg. requires(chassis);
     getPIDController().setAbsoluteTolerance(0.05);
     getPIDController().setSetpoint(position);
+
+    setRunWhenDisabled(true);
 
   }
 

@@ -19,8 +19,10 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.Timer;
 import frc.robot.commands.DriveWithJoysticks;
 import frc.robot.commands.ExtendIntake;
+import frc.robot.commands.RetractIntake;
 import frc.robot.commands.HatchIntakeUp;
 import frc.robot.commands.SwapDriveDirection;
 import frc.robot.commands.HatchInitial;
@@ -55,7 +57,7 @@ public class Robot extends TimedRobot {
   public static SwapIntake swapIntake;
   
   public static ExtendIntake extend;
-  public static ExtendIntake retract;
+  public static RetractIntake retract;
 
   public static Trigger.ButtonScheduler upButton;
 
@@ -230,8 +232,9 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledInit() {
-    retract = new ExtendIntake(0.94);
-    if(actuatorPosition.getVoltage() > 0.95){
+    retract = new RetractIntake(0.94);
+    boolean middleOfMatch = getMatchTime() > 60;
+    if(actuatorPosition.getVoltage() > 0.95 && !middleOfMatch){
       retract.start();
     }
   }
