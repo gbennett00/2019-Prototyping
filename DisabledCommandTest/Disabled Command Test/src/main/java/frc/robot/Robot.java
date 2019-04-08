@@ -25,6 +25,9 @@ import frc.robot.subsystems.ExampleSubsystem;
  */
 public class Robot extends TimedRobot {
   public static ExampleSubsystem m_subsystem = new ExampleSubsystem();
+
+  public static ExampleCommand extend = new ExampleCommand();
+
   public static OI m_oi;
 
   public static DigitalInput limitSwitch;
@@ -65,6 +68,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledInit() {
+    extend.start();
   }
 
   @Override
