@@ -8,8 +8,8 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.Button;
-import edu.wpi.first.wpilibj.JoystickButton;
+import edu.wpi.first.wpilibj.buttons.Button;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.ExampleCommand;
 
 /**
@@ -17,11 +17,13 @@ import frc.robot.commands.ExampleCommand;
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
-  public OI{
-    public Joystick controller = new Joystick(0);
+  public OI(){
+    Joystick controller = new Joystick(0);
 
-    public Button controllerA = new JoystickButton(1);
+    Button controllerA = new JoystickButton(controller, 1);
     controllerA.whenPressed(new ExampleCommand());
 
-  
+    controllerA.close();
+
+  }
 }

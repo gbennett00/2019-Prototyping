@@ -46,7 +46,7 @@ public class Robot extends TimedRobot {
     m_chooser.setDefaultOption("Default Auto", new ExampleCommand());
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", m_chooser);
-    limitSwitch = DigitalInput(0);
+    limitSwitch = new DigitalInput(0);
   }
 
   /**
@@ -68,6 +68,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledInit() {
+    extend.setRunWhenDisabled(true);
     extend.start();
   }
 
